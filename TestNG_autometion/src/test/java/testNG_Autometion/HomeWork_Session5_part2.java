@@ -49,7 +49,7 @@ public class HomeWork_Session5_part2 {
 		Thread.sleep(4000);
 		driver.findElement(New_account_Locator).click();
 		Thread.sleep(5000);
-		String account_Name = "KR personal Account" + new Random().nextInt(999);
+		String account_Name = "Name: " + new Random().nextInt(999);
 		driver.findElement(By.id("account")).sendKeys(account_Name);
 		Thread.sleep(2000);
 		String description = "KR new income :" + new Random().nextInt(9999);
@@ -57,33 +57,27 @@ public class HomeWork_Session5_part2 {
 		driver.findElement(By.id("description")).sendKeys(description);
 		driver.findElement(Initial_Balance_locator).sendKeys("50000.00");
 
-		// so finally I got my Xpath axis after 1.5 hours of trial and error method .
-
 		driver.findElement(By.xpath("//div[@class='col-md-6']/descendant::button")).click();
 		Thread.sleep(10000);
 		// using explicit wait for Account Successfully created validation
 		waitForElement(driver, 30, By.xpath("//div[@class='alert alert-success fade in']"));
-System.out.println(driver.findElement(By.xpath("//div[@class='alert alert-success fade in']")).getText());
-		// driver.findElement(List_Of_Acc_Locator).click();
+		System.out.println(driver.findElement(By.xpath("//div[@class='alert alert-success fade in']")).getText());
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		//js.executeScript("scroll(0,25800)");
-		
-		waitForElement(driver,12,By.xpath("//a[@id='did1462']"));
-		driver.findElement(By.xpath("//a[@id='did1462']")).click();
-		
-		Thread.sleep(2000);
-		driver.findElement(By.xpath("//button[@class='btn btn-primary']")).click();
-		Thread.sleep(2000);
-		
-		//Asserting delete message
-		String Actual_Text =" Account Created Successfully";
-		By expected_Success_Locator = By.xpath("//div[@class='alert alert-success fade in']");
-		Assert.assertEquals(Actual_Text, expected_Success_Locator);
+		js.executeScript("scroll(0,31000)");
 
-		}
+		// using explicit wait Validate new account showed up in the bottom of the table
+		waitForElement(driver, 30, By.xpath("//td[text()='" + account_Name + "']/parent::tr"));
 
-		
+		driver.findElement(By.xpath("//td[text()='" + account_Name + "']/parent::tr/descendant::i[2]")).click();
+
+		driver.findElement(By.xpath("//button[text()='OK']")).click();
+		Thread.sleep(2000);
+		// using explicit wait for Account Successfully Deleted validation
+		waitForElement(driver, 30, By.xpath("//div[@class='alert alert-success fade in']"));
+		System.out.println(driver.findElement(By.xpath("//div[@class='alert alert-success fade in']")).getText());
+
+	}
 
 	private void waitForElement(WebDriver driver, int timeToWaitInSeconds, By ElementLocator) {
 		WebDriverWait wait = new WebDriverWait(driver, timeToWaitInSeconds);
@@ -95,8 +89,8 @@ System.out.println(driver.findElement(By.xpath("//div[@class='alert alert-succes
 
 	public void close() {
 
-		//driver.close();
-		//driver.quit();
+		 driver.close();
+		 driver.quit();
 	}
 
 }
